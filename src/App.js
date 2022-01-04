@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import './App.css';
 import Login from './components/Login';
 import Navigation from './components/Navigation';
@@ -22,9 +22,9 @@ function App() {
     let navigate = useNavigate();
     const location = useLocation();
     const handleAction = (id) => {
-        setLoading(true);
-        const authentication = getAuth();
+            const authentication = getAuth();
             if (id === 2 && email && password ) {
+                setLoading(true);
                 createUserWithEmailAndPassword(authentication, email, password)
                     .then((response) => {
                         navigate('/')
@@ -40,6 +40,7 @@ function App() {
             }
 
             if (id === 1 && email && password) {
+                setLoading(true);
                 signInWithEmailAndPassword(authentication, email, password)
                     .then((response) => {
                         navigate('/')
@@ -55,6 +56,10 @@ function App() {
                         setLoading(false);
                         toast.error(error.message);
                 })
+            }
+
+            if (!email || !password) {
+                toast.error('Please type your credentials');
             }
 
     }
