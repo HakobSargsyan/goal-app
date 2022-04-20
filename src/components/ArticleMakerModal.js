@@ -6,7 +6,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import Modal from "@mui/material/Modal";
 import {makeStyles} from "@material-ui/core/styles";
 import ArticleMakerAddForm from "./ArticleMakerAddForm";
-
+import ArticleMakerEditForm from "./ArticleMakerEditForm";
+import {NEW_MODE} from "../utils/Common";
 const useStyles = makeStyles((theme) => ({
     closeButtonContainer : {
         justifyContent: 'space-between',
@@ -28,14 +29,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ArticleMakerModal = ({open, setOpen}) => {
+const ArticleMakerModal = ({open, setOpen, mode, articleObject}) => {
     const [loading, setLoading] = useState(true);
     const classes = useStyles();
     const handleClose = () => setOpen(false);
     const handleModalState = () => {
         setOpen(!open);
     }
-
     return (
         <Modal
             open={open}
@@ -46,18 +46,24 @@ const ArticleMakerModal = ({open, setOpen}) => {
             <Box className={classes.modalContainer}>
                 <Box display="flex" className={classes.closeButtonContainer}>
                     <Typography gutterBottom variant="h5" component="span" className={classes.modalTitle}>
-                        Write your Article
+                        {mode === NEW_MODE ? "Write your Article" : "Edit your Article" }
                     </Typography>
                     <IconButton onClick={handleModalState} >
                         <CloseIcon />
                     </IconButton>
                 </Box>
-                <ArticleMakerAddForm
+                {mode === NEW_MODE ? (<ArticleMakerAddForm
                     loading={loading}
                     setLoading={setLoading}
                     open={open}
                     setOpen={setOpen}
-                />
+                />) : (<ArticleMakerEditForm
+                    loading={loading}
+                    setLoading={setLoading}
+                    open={open}
+                    setOpen={setOpen}
+                    articleObject={articleObject}
+                />)}
             </Box>
         </Modal>
     );

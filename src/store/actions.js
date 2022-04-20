@@ -1,4 +1,13 @@
-import {SORT_ARTICLES, ADD_ARTICLE, SEARCH_ARTICLE, SEARCH_BY_CATEGORY, LOAD_ARTICLES, RESET_ARTICLE_DATA} from "./types";
+import {
+    SORT_ARTICLES,
+    ADD_ARTICLE,
+    SEARCH_ARTICLE,
+    SEARCH_BY_CATEGORY,
+    LOAD_ARTICLES,
+    RESET_ARTICLE_DATA,
+    LOAD_HOMEPAGE_ARTICLES,
+    UPDATE_ARTICLE
+} from "./types";
 
 const actions = {
     ADD_ARTICLE: (payload) => {
@@ -18,6 +27,12 @@ const actions = {
     },
     RESET_ARTICLE_DATA:  (payload) => {
         return { type: RESET_ARTICLE_DATA, payload }
+    },
+    LOAD_HOMEPAGE_ARTICLES:  (payload) => {
+        return { type: LOAD_HOMEPAGE_ARTICLES, payload }
+    },
+    UPDATE_ARTICLE:  (payload) => {
+        return { type: UPDATE_ARTICLE, payload }
     },
 }
 

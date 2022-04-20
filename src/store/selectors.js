@@ -6,6 +6,13 @@ const stateCategoryId = state => state.article.categoryId;
 const stateTerm = state => state.article.term;
 const stateFilteredArticles = state =>  state.article.filteredArticles ? state.article.filteredArticles : [];
 
+// get home page articles with memoized way
+// it is for check store before make an api call
+export const selectHomePageArticles = createSelector(
+    (state) => state.home.articles,
+    (articles) => articles.filter((article) => article.markAsHome)
+)
+
 // selector is choosing state (full articles | filtered articles)
 // cached|memoized
 export const selectConditonalArticles = createSelector([

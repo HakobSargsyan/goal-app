@@ -14,26 +14,28 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CardActionArea from '@mui/material/CardActionArea';
-import {useNavigate} from "react-router-dom";
 import Search from "./Search";
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { collection, getDocs } from "firebase/firestore";
+import {collection, getDocs, doc, updateDoc} from "firebase/firestore";
 
 import {
     articleCategories,
     sortByValues,
-    TITLE
+    TITLE,
+    NEW_MODE,
+    EDIT_MODE,
 } from "../utils/Common";
 
 import {selectConditonalArticles, selectAllArticles} from "../store/selectors";
 import ArticleMakerModal from "./ArticleMakerModal";
 import db from "../firebase-config";
 import Loader from "react-loader-spinner";
-
+import { ToastContainer, toast } from 'react-toastify';
+import {useApplicationContext} from "../utils/Context";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -53,23 +55,25 @@ const useStyles = makeStyles((theme) => ({
 
 const Articles = () => {
     const classes = useStyles();
-    const navigate = useNavigate();
     const conditionalArticles = useSelector(selectConditonalArticles);
     const allArticles = useSelector(selectAllArticles);
-    const [open, setOpen] = React.useState(false);
+    const {open, setOpen} = useApplicationContext();
     const [sortBy, setSortBy] = React.useState("");
     const [categoryId, setCategoryId] = React.useState("");
     const [loading, setLoading] = React.useState(false);
+    const [mode, setMode] = React.useState(NEW_MODE);
+    const [articleObject, setArticleObject] = React.useState({});
     window.store = store;
 
 
-    const editArticle = () => {
-        navigate('/');
+    const editArticle = (article) => {
+        setMode(EDIT_MODE);
+        setArticleObject(article);
+        setOpen(true);
     }
 
     // passed to the search component
     const searchCallback = (term) => {
-        console.log('asa');
         store.dispatch(actions['SEARCH_ARTICLE']({
             filteredArticles: allArticles,
             term: term,
@@ -77,17 +81,16 @@ const Articles = () => {
             categoryId
         }));
     }
-
-    const clickOnCard = () => {
-        alert('as')
-    }
+    
     /* Fetch article data on Init*/
     const loadFirebaseArticles = async () => {
         const snapshots = [];
         const querySnapshot = await getDocs(collection(db, "articles"));
         setLoading(false);
         querySnapshot.forEach((doc) => {
-            snapshots.push(doc.data());
+            let data = doc.data();
+            data['id'] = doc.id;
+            snapshots.push(data);
         });
 
         store.dispatch(actions['RESET_ARTICLE_DATA']({}));
@@ -119,6 +122,13 @@ const Articles = () => {
         }));
     }
 
+    const markAsHome = async (article) => {
+        const articlesRef = doc(db, "articles", article.id.toString());
+        await updateDoc(articlesRef, {
+            "markAsHome": true,
+        });
+        toast.success(`Article ${article.id} successfuly defined as a recent article` );
+    }
     return (
        <>
            <Box className={classes.root}>
@@ -126,7 +136,10 @@ const Articles = () => {
                       justifyContent="flex-start"
                       alignItems="flex-start"
                       spacing={3} >
-                   <Button onClick={() => setOpen(true)} variant="contained">New Article</Button>
+                   <Button onClick={() => {
+                       setOpen(true);
+                       setMode(NEW_MODE);
+                   }} variant="contained">New Article</Button>
                    <Search placeholder="Search Your Article" searchCallback={searchCallback} />
                    <FormControl sx={{ m: 1, minWidth: 160 }} size="small">
                        <InputLabel id="demo-select-small">Sort</InputLabel>
@@ -169,7 +182,6 @@ const Articles = () => {
                        </Select>
                    </FormControl>
                </Stack>
-
            </Box>
 
            {loading ? (<Loader
@@ -181,12 +193,13 @@ const Articles = () => {
            />) :
                (
                     <>
+                        <ToastContainer />
                         { !conditionalArticles && ( <h1>Your Articles</h1> ) }
                         <div className={classes.articleWrapper} >
                             {conditionalArticles && conditionalArticles.map(article => (
-                                <Card className={classes.articleCard} key={article.key} sx={{ maxWidth: 345, marginBottom: '10px' }}>
+                                <Card className={classes.articleCard} key={article.id} sx={{ maxWidth: 345, marginBottom: '10px' }}>
                                     <b>{article.date.seconds}</b>
-                                    <CardActionArea onClick={clickOnCard}>
+                                    <CardActionArea onClick={() => editArticle(article)}>
                                         <CardMedia
                                             component="img"
                                             height="140"
@@ -203,14 +216,14 @@ const Articles = () => {
 
                                     </CardActionArea>
                                     <CardActions>
-                                        <Button onClick={editArticle} size="small" variant="contained" >Edit Article</Button>
-                                        <Button color="error" onClick={editArticle} size="small" variant="contained" >Set to Home</Button>
+                                        <Button onClick={() => editArticle(article)} size="small" variant="contained" >Edit Article</Button>
+                                        <Button color="error" onClick={() => markAsHome(article)} size="small" variant="contained" >Set to Home</Button>
                                     </CardActions>
                                 </Card>
                             ))}
                         </div>
 
-                        <ArticleMakerModal open={open} setOpen={setOpen}/>
+                        <ArticleMakerModal articleObject={articleObject} open={open} setOpen={setOpen} mode={mode}/>
                     </>
                )}
        </>

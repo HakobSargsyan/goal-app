@@ -4,7 +4,8 @@ import {
     SEARCH_ARTICLE,
     SORT_ARTICLES,
     SEARCH_BY_CATEGORY,
-    RESET_ARTICLE_DATA
+    RESET_ARTICLE_DATA,
+    UPDATE_ARTICLE
 } from "../types";
 const initialState = {
     articles: [],
@@ -25,6 +26,15 @@ const article = (state = initialState, action) => {
                 articles: state.articles.concat(action.payload.articles).sort(sortByKey('title')),
                 filteredArticles: []
             });
+        case UPDATE_ARTICLE:
+            return {
+                ...state,
+                articles : state.articles
+                    /* Filter any existing item matching on uniqueId */
+                    .filter(article => (article.id !== action.payload.id))
+                    /* Append replacement { action.payload } to state array */
+                    .concat([ action.payload ])
+            }
         case RESET_ARTICLE_DATA:
             return {
                 ...state,

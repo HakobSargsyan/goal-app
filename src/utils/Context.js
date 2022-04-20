@@ -9,11 +9,14 @@ export const useApplicationContext = () => {
 export const ApplicationProvider = ({children}) => {
     const [term, setTerm] = useState('');
     const [tabValue, setTabValue] = useState('/');
+    const [open, setOpen] = useState(false);
     const state = {
         term,
         setTerm,
         tabValue,
-        setTabValue
+        setTabValue,
+        open,
+        setOpen,
     }
    return (
        <ApplicationContext.Provider value={state}>
