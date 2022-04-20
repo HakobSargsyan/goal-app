@@ -8,9 +8,12 @@ export const useApplicationContext = () => {
 
 export const ApplicationProvider = ({children}) => {
     const [term, setTerm] = useState('');
+    const [tabValue, setTabValue] = useState('/');
     const state = {
         term,
         setTerm,
+        tabValue,
+        setTabValue
     }
    return (
        <ApplicationContext.Provider value={state}>
