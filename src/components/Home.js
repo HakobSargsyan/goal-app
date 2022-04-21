@@ -70,7 +70,7 @@ const Home = () => {
             </Typography>
             <div className={classes.articleWrapper}>
                 {homePageArticles && homePageArticles.map(article => (
-                    <Card  className={classes.articleCard} key={article.key} sx={{ maxWidth: 345, marginBottom: '10px' }}>
+                    <Card  className={classes.articleCard} key={article.id} sx={{ maxWidth: 345, marginBottom: '10px' }}>
                         <b>{article.date.seconds}</b>
                         <CardActionArea >
                             <CardMedia

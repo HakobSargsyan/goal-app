@@ -82,7 +82,7 @@ const ArticleMakerEditForm = ({loading, setLoading, open, setOpen, articleObject
                         [ID]: doc.id,
                         [INTRO]: doc.data().intro,
                         [DESCRIPTION]: doc.data().description,
-                        [MARKASHOME]: doc.data().markAsHome,
+                        [MARKASHOME]: doc.data()?.markAsHome ? true : false,
                         [CATEGORY]: doc.data().categoryId,
                     }
                 }
@@ -106,10 +106,10 @@ const ArticleMakerEditForm = ({loading, setLoading, open, setOpen, articleObject
                 },
                 [KEY]: (Math.random() + 1).toString(36).substring(7)
             }
+            handleModalState();
             store.dispatch(actions['UPDATE_ARTICLE'](dispatcher));
             const articlesRef = doc(db, "articles", article.id);
             await updateDoc(articlesRef, fields);
-            handleModalState();
             toast.success(`Article ${article.id} successfuly updated` );
         }
     }

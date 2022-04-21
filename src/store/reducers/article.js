@@ -19,7 +19,7 @@ const article = (state = initialState, action) => {
         case ADD_ARTICLE:
                 return Object.assign({}, state, {
                     articles: state.articles.concat(action.payload).sort(sortByKey('title')),
-                    filteredArticles: []
+                    filteredArticles: state.articles
                 });
         case LOAD_ARTICLES:
             return Object.assign({}, state, {
@@ -30,10 +30,15 @@ const article = (state = initialState, action) => {
             return {
                 ...state,
                 articles : state.articles
-                    /* Filter any existing item matching on uniqueId */
+                    /* Filter any existing item matching on unique document id */
                     .filter(article => (article.id !== action.payload.id))
                     /* Append replacement { action.payload } to state array */
-                    .concat([ action.payload ])
+                    .concat([ action.payload ]),
+                filteredArticles : state.articles
+                    /* Filter any existing item matching on unique document id */
+                    .filter(article => (article.id !== action.payload.id))
+                    /* Append replacement { action.payload } to state array */
+                    .concat([ action.payload ]),
             }
         case RESET_ARTICLE_DATA:
             return {

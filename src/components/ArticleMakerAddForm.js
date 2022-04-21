@@ -9,6 +9,7 @@ import {
     KEY,
     MARKASHOME,
     SECONDS,
+    ID,
     DESCRIPTION,
     validateArticleMakerFieldsChange,
     validateArticleMakerFieldsSubmit
@@ -60,18 +61,20 @@ const ArticleMakerAddForm = ({loading, setLoading, open, setOpen}) => {
         if (isValid) {
             // dispatch add article action
             // setup current date
-            const dispatcher = {
-                ...fields,
-                [DATE] : {
-                    [SECONDS] : new Date().getTime()
-                },
-                [KEY]: (Math.random() + 1).toString(36).substring(7)
-            }
-            store.dispatch(actions['ADD_ARTICLE'](dispatcher));
             // store in firebase db
             addDoc(collection(db,'articles'),{
                 ...fields,
                 date: serverTimestamp()
+            }).then((ref) => {
+                const dispatcher = {
+                    ...fields,
+                    [DATE] : {
+                        [SECONDS] : new Date().getTime()
+                    },
+                    [KEY]: (Math.random() + 1).toString(36).substring(7),
+                    [ID]: ref.id
+                }
+                store.dispatch(actions['ADD_ARTICLE'](dispatcher));
             })
             handleModalState();
         }

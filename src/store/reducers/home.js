@@ -9,7 +9,6 @@ const sortByKey = key => (a, b) => a[key] < b[key] ? 1 : -1
 const home = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_HOMEPAGE_ARTICLES:
-            console.log(state, action.payload.articles);
             return Object.assign({}, state, {
                 articles: state.articles.concat(action.payload.articles).sort(sortByKey('Date')),
             });

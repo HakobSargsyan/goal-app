@@ -81,7 +81,7 @@ const Articles = () => {
             categoryId
         }));
     }
-    
+
     /* Fetch article data on Init*/
     const loadFirebaseArticles = async () => {
         const snapshots = [];
