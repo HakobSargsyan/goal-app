@@ -10,7 +10,9 @@ const CustomInputField = React.forwardRef((props, inputRef) => {
             newRef.current.focus();
             newRef.current.style.border = "solid red 1px";
             setTimeout(() => {
-                newRef.current.style.border = "";
+                if (newRef.current) {
+                        newRef.current.style.border = "";
+                }
             }, 2500)
         },
     }))

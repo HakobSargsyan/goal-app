@@ -19,7 +19,8 @@ const Search = ({searchCallback, placeholder}) => {
     }, [])
     return (
         <>
-            <TextField placeholder="Type for search user"
+            <TextField
+                   placeholder={placeholder}
                    size="small"
                    id="outlined-search"
                    label={placeholder}

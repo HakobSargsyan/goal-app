@@ -11,17 +11,21 @@
     "@mui/material": "^5.1.1",
     "@mui/styled-engine-sc": "^5.1.0",
     "@mui/styles": "^5.1.1",
+    "@reduxjs/toolkit": "^1.8.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@tinymce/tinymce-react": "^4.0.0",
     "@types/react-router-dom": "^5.3.2",
     "axios": "^0.24.0",
-    "firebase": "^9.6.1",
+    "date-fns": "^2.28.0",
+    "firebase": "^9.6.11",
     "firebase-tools": "^9.23.3",
     "lodash": "4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-loader-spinner": "^4.0.0",
+    "react-redux": "^7.2.6",
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
     "react-toastify": "^8.1.0",
@@ -55,5 +59,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/date-fns": "^2.6.0"
   }
 }

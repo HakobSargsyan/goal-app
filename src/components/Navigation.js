@@ -4,6 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Users from './Users';
+import Articles from './Articles';
 import Home from './Home';
 import UserDetails from './UserDetails';
 import Repositories from './Repositories';
@@ -86,12 +87,14 @@ const Navigation = ({path}) => {
                         <Tab label="Home" value="/" component={Link} to='/' />
                         <Tab label="Users" value="/users" component={Link} to='/users' />
                         <Tab label="Repositories" value="/repositories" component={Link} to='/repositories' />
+                        <Tab label="Articles" value="/articles" component={Link} to='/articles' />
                         <Tab icon={<LogoutIcon />} onClick={handleLogout} />
                     </Tabs>
-                <Routes>
+                    <Routes>
                             <Route path='/users' element={<Users />} />
                             <Route path='/repositories' element={<Repositories />} />
                             <Route path='/followers' element={<Home />} />
+                            <Route path='/articles' element={<Articles />} />
                             <Route path="/" element={<Home />}></Route>
                             <Route path='/user/:username' element={<UserDetails />} />
                     </Routes>
