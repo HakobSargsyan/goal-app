@@ -12,8 +12,8 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import {makeStyles} from "@material-ui/core/styles";
-import {ErrorBoundary} from 'react-error-boundary';
-import ReactDOM from 'react-dom';
+import {ErrorBoundary} from 'react-error-boundary'
+
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: '16px'
@@ -29,14 +29,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ErrorHandler = ({error}) => {
-    return (
-        <div role="alert">
-            <p>An error occurred:</p>
-            <pre>{error.message}</pre>
-        </div>
-    )
-}
 
 const Home = () => {
     const classes = useStyles();
@@ -59,6 +51,16 @@ const Home = () => {
             articles: snapshots,
         }));
     };
+
+     const ErrorHandler = ({error}) => {
+        return (
+            <div role="alert">
+                <p>An error occurred:</p>
+                <pre>{error.message}</pre>
+            </div>
+        )
+    }
+
     useEffect(() => {
         let authToken = sessionStorage.getItem('Auth Token')
 
@@ -71,34 +73,35 @@ const Home = () => {
         }
         getHomePageArticles();
     }, [])
+
+
     return (
         <>
-            <Typography className={classes.articleWrapperTitle} gutterBottom variant="h5" component="div">
-                Recent Articles
-            </Typography>
-            <div className={classes.articleWrapper}>
-                {homePageArticles && homePageArticles.map(article => (
-                    <Card  className={classes.articleCard} key={article.id} sx={{ maxWidth: 345, marginBottom: '10px' }}>
-                        <b>{article.date.seconds}</b>
-                        <CardActionArea >
-                            <CardMedia
-                                component="img"
-                                height="140"
-                                image="https://cdn.motor1.com/images/mgl/m7oYq/s3/2021-mercedes-benz-s-class.jpg"
-                                alt="green iguana"
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    {article.title}
-                                </Typography>
-                                <div dangerouslySetInnerHTML={{ __html: article.description }} variant="body2" color="text.secondary">
-                                </div>
-                            </CardContent>
+            <ErrorBoundary FallbackComponent={ErrorHandler}>
+                <div className={classes.articleWrapper}>
+                    {homePageArticles && homePageArticles.map(article => (
+                        <Card  className={classes.articleCard} key={article.id} sx={{ maxWidth: 345, marginBottom: '10px' }}>
+                            <b>{article.date.seconds}</b>
+                            <CardActionArea >
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image="https://cdn.motor1.com/images/mgl/m7oYq/s3/2021-mercedes-benz-s-class.jpg"
+                                    alt="green iguana"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        {article.title}
+                                    </Typography>
+                                    <div dangerouslySetInnerHTML={{ __html: article.description }} variant="body2" color="text.secondary">
+                                    </div>
+                                </CardContent>
 
-                        </CardActionArea>
-                    </Card>
-                ))}
-            </div>
+                            </CardActionArea>
+                        </Card>
+                    ))}
+                </div>
+            </ErrorBoundary>
         </>
     );
 }

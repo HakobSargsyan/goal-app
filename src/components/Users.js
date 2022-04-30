@@ -14,7 +14,6 @@ import Loader from "react-loader-spinner";
 const Users = () => {
     const [users, setUsers] = useState(null);
     const {term} = useApplicationContext();
-    const ref = React.createRef();
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
