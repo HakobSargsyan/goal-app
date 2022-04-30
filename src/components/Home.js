@@ -12,8 +12,8 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import {makeStyles} from "@material-ui/core/styles";
-
-
+import {ErrorBoundary} from 'react-error-boundary';
+import ReactDOM from 'react-dom';
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: '16px'
@@ -28,6 +28,15 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(3)
     },
 }));
+
+const ErrorHandler = ({error}) => {
+    return (
+        <div role="alert">
+            <p>An error occurred:</p>
+            <pre>{error.message}</pre>
+        </div>
+    )
+}
 
 const Home = () => {
     const classes = useStyles();
@@ -62,7 +71,6 @@ const Home = () => {
         }
         getHomePageArticles();
     }, [])
-
     return (
         <>
             <Typography className={classes.articleWrapperTitle} gutterBottom variant="h5" component="div">

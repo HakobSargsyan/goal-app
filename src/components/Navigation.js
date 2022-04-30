@@ -1,13 +1,8 @@
-import * as React from 'react';
+import React, {Suspense} from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import Users from './Users';
-import Articles from './Articles';
-import Home from './Home';
-import UserDetails from './UserDetails';
-import Repositories from './Repositories';
 import {makeStyles} from '@material-ui/core/styles'
 import {ApplicationProvider} from '../utils/Context';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -19,6 +14,13 @@ import {
     useNavigate
 } from "react-router-dom";
 import {useEffect} from "react";
+import Loader from "react-loader-spinner";
+
+const  Users = React.lazy(() => import('./Users'));
+const  Articles = React.lazy(() => import('./Articles'));
+const  Home = React.lazy(() => import('./Home'));
+const  UserDetails = React.lazy(() => import('./UserDetails'));
+const  Repositories = React.lazy(() => import('./Repositories'));
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -90,14 +92,24 @@ const Navigation = ({path}) => {
                         <Tab label="Articles" value="/articles" component={Link} to='/articles' />
                         <Tab icon={<LogoutIcon />} onClick={handleLogout} />
                     </Tabs>
-                    <Routes>
-                            <Route path='/users' element={<Users />} />
-                            <Route path='/repositories' element={<Repositories />} />
-                            <Route path='/followers' element={<Home />} />
-                            <Route path='/articles' element={<Articles />} />
-                            <Route path="/" element={<Home />}></Route>
-                            <Route path='/user/:username' element={<UserDetails />} />
-                    </Routes>
+                    <Suspense fallback={
+                            <Loader
+                                className="spinner"
+                                type="ThreeDots"
+                                color="black"
+                                height={100}
+                                width={100}
+                            />
+                        }>
+                        <Routes>
+                                <Route path='/users' element={<Users/>}  />
+                                <Route path='/repositories' element={<Repositories />} />
+                                <Route path='/followers' element={<Home />} />
+                                <Route path='/articles' element={<Articles />} />
+                                <Route path="/" element={<Home />} />
+                                <Route path='/user/:username' element={<UserDetails />} />
+                        </Routes>
+                    </Suspense>
             </ApplicationProvider>
         </Box>
     );
