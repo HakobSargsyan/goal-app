@@ -73,9 +73,9 @@ const Users = () => {
             setUsers(null);
         }
         navigate({
-            pathname: `/users?q=${term}`
+            pathname: '/users',
+            search: `?q=${term}`
         });
-
     }
 
     return (

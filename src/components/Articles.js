@@ -35,7 +35,7 @@ import ArticleMakerModal from "./ArticleMakerModal";
 import db from "../firebase-config";
 import Loader from "react-loader-spinner";
 import { ToastContainer, toast } from 'react-toastify';
-import {useApplicationContext} from "../utils/Context";
+import {useApplicationContext, myFunction} from "../utils/Context";
 
 const useStyles = makeStyles((theme) => ({
     root: {

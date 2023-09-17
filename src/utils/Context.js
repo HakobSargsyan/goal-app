@@ -5,7 +5,9 @@ const ApplicationContext = React.createContext();
 export const useApplicationContext = () => {
     return useContext(ApplicationContext);
 }
-
+export const myFunction = () => {
+    alert();
+}
 export const ApplicationProvider = ({children}) => {
     const [term, setTerm] = useState('');
     const [tabValue, setTabValue] = useState('/');
@@ -17,6 +19,7 @@ export const ApplicationProvider = ({children}) => {
         setTabValue,
         open,
         setOpen,
+        myFunction
     }
    return (
        <ApplicationContext.Provider value={state}>

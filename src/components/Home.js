@@ -13,6 +13,8 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import {ErrorBoundary} from 'react-error-boundary'
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -78,6 +80,14 @@ const Home = () => {
     return (
         <>
             <ErrorBoundary FallbackComponent={ErrorHandler}>
+                <Editor
+                    wrapperClassName="wrapper-class"
+                    editorClassName="editor-class"
+                    toolbarClassName="toolbar-class"
+                    wrapperStyle={{}}
+                    editorStyle={{}}
+                    toolbarStyle={{}}
+                                />
                 <div className={classes.articleWrapper}>
                     {homePageArticles && homePageArticles.map(article => (
                         <Card  className={classes.articleCard} key={article.id} sx={{ maxWidth: 345, marginBottom: '10px' }}>
