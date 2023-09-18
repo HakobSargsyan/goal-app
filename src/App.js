@@ -11,37 +11,48 @@ import {
 } from "react-router-dom";
 // eslint-disable-next-line
 import { app } from './firebase-config';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     let navigate = useNavigate();
     const location = useLocation();
-    const handleAction = (id) => {
-            const authentication = getAuth();
-            if (id === 2 && email && password ) {
+    const handleAction = (id, values) => {
+        console.log(values, id);
+        const authentication = getAuth();
+            if (id === 2 && values.email && values.password ) {
                 setLoading(true);
-                createUserWithEmailAndPassword(authentication, email, password)
-                    .then((response) => {
-                        navigate('/')
-                        sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken);
-                        setLoading(false);
-                    }).catch((error) => {
-                        if (error.code === 'auth/email-already-in-use') {
-                            toast.error('Email Already in Use');
-                        }
-                        setLoading(false);
-                        toast.error(error.message);
+                createUserWithEmailAndPassword(authentication, values.email, values.password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        updateProfile(user, {
+                            displayName: `${values.firstName} ${values.lastName}`,
+                        })
+                            .then(() => {
+                                navigate('/');
+                                sessionStorage.setItem('Auth Token', userCredential._tokenResponse.refreshToken);
+                                setLoading(false);
+                            })
+                            .catch((error) => {
+                                toast.error('Error updating user profile: ' + error.message);
+                            });
                     })
+                    .catch((error) => {
+                        if (error.code === 'auth/email-already-in-use') {
+                            navigate('/register');
+                            toast.error('Email Already in Use');
+                            setLoading(false);
+                        } else {
+                            toast.error(error.message);
+                        }
+                    });
             }
 
-            if (id === 1 && email && password) {
+            if (id === 1 && values.email && values.password) {
                 setLoading(true);
-                signInWithEmailAndPassword(authentication, email, password)
+                signInWithEmailAndPassword(authentication, values.email, values.password)
                     .then((response) => {
                         navigate('/')
                         sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken);
@@ -58,7 +69,7 @@ function App() {
                 })
             }
 
-            if (!email || !password) {
+            if (!values.email || !values.password) {
                 toast.error('Please type your credentials');
             }
 
@@ -81,10 +92,8 @@ function App() {
                             element={
                                 <Login
                                     title="Login"
-                                    setEmail={setEmail}
-                                    setPassword={setPassword}
                                     action={1}
-                                    handleAction={() => handleAction(1)}
+                                    handleAction={handleAction}
                                 />}
                         />
                         <Route
@@ -92,10 +101,8 @@ function App() {
                             element={
                                 <Login
                                     title="Registration"
-                                    setEmail={setEmail}
-                                    setPassword={setPassword}
                                     action={2}
-                                    handleAction={() => handleAction(2)}
+                                    handleAction={handleAction}
                                 />}
                         />
 

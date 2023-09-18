@@ -97,6 +97,7 @@ const Articles = () => {
         store.dispatch(actions['LOAD_ARTICLES']({
             articles: snapshots,
         }));
+        // myFunction();
     }
 
     React.useEffect(() => {
@@ -197,8 +198,8 @@ const Articles = () => {
                         { !conditionalArticles && ( <h1>Your Articles</h1> ) }
                         <div className={classes.articleWrapper} >
                             {conditionalArticles && conditionalArticles.map(article => (
-                                <Card className={classes.articleCard} key={article.id} sx={{ maxWidth: 345, marginBottom: '10px' }}>
-                                    <b>{article.date.seconds}</b>
+                                <Card className={classes.articleCard} key={`${article?.id} - ${article?.title}`} sx={{ maxWidth: 345, marginBottom: '10px' }}>
+                                    <b>{article?.date?.seconds}</b>
                                     <CardActionArea onClick={() => editArticle(article)}>
                                         <CardMedia
                                             component="img"
@@ -208,9 +209,9 @@ const Articles = () => {
                                         />
                                         <CardContent>
                                             <Typography gutterBottom variant="h5" component="div">
-                                                {article.title}
+                                                {article?.title}
                                             </Typography>
-                                            <div dangerouslySetInnerHTML={{ __html: article.description }} variant="body2" color="text.secondary">
+                                            <div dangerouslySetInnerHTML={{ __html: article?.description }} variant="body2" color="text.secondary">
                                             </div>
                                         </CardContent>
 

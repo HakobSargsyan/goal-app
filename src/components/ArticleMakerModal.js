@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ArticleMakerModal = ({open, setOpen, mode, articleObject}) => {
+const ArticleMakerModal = ({open, setOpen, mode, articleObject, loadFirebaseArticles}) => {
     const [loading, setLoading] = useState(true);
     const classes = useStyles();
     const handleClose = () => setOpen(false);
@@ -53,7 +53,7 @@ const ArticleMakerModal = ({open, setOpen, mode, articleObject}) => {
                     </IconButton>
                 </Box>
                 {mode === NEW_MODE ? (<ArticleMakerAddForm
-                    loading={loading}
+                    loading={false}
                     setLoading={setLoading}
                     open={open}
                     setOpen={setOpen}

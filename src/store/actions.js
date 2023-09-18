@@ -17,6 +17,7 @@ const actions = {
         return { type: SEARCH_ARTICLE, payload }
     },
     LOAD_ARTICLES: (payload) => {
+        console.log(payload);
         return { type: LOAD_ARTICLES, payload }
     },
     SORT_ARTICLES: (payload) => {
